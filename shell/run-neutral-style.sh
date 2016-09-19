@@ -16,7 +16,7 @@ for TEMP in $NEU_TEMPLATE
 do
 	OUT=$(echo $1-$TEMP-output | sed -e "s/\.//g").png
 	th neural_style.lua -style_image /root/image/$TEMP -content_image /root/image/$1 -output_image /root/image/$OUT
-	aws s3api put-object --bucket neutral-style-output --key $OUT --body /root/image/$OUT
+	aws s3api put-object --bucket neutral-style-output --key $OUT --body /root/image/$OUT --content-type "image/png"
 done
 
 for TEMP in $NEU_TEMPLATE

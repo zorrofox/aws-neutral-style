@@ -338,7 +338,7 @@ function delUpload(event, context, callback) {
 				}]);
 
 				for (var i = 0; i < data.Contents.length; i++) {
-					if (data.Contents[i].Key.indexOf(event.query.key) == 0)
+					if (data.Contents[i].Key.indexOf(event.query.key.replace(/\./g,"")) == 0)
 						objectKey.push({
 							Key: data.Contents[i].Key
 						});
@@ -351,7 +351,7 @@ function delUpload(event, context, callback) {
 				}]);
 
 				for (var i = 0; i < data.Contents.length; i++) {
-					if (data.Contents[i].Key.indexOf(event.query.key) > 0)
+					if (data.Contents[i].Key.indexOf(event.query.key.replace(/\./g,"")) > 0)
 						objectKey.push({
 							Key: data.Contents[i].Key
 						});

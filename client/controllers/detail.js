@@ -11,7 +11,7 @@ angular.module('Instagram')
     });
 
     API.getFeedStyle().success(function(data) {
-      $scope.origPhotos = data;
+      $scope.stylePhotos = data;
     });
 
     API.getFeedOutput().success(function(data) {

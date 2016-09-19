@@ -22,7 +22,7 @@
           <h5 class="text-center"><i class="ion-chatbox-working text-primary"></i> Style Pictures</h5>
           <hr class="soften">
           <div class="row">
-            <div ng-repeat="photo in origPhotos" class="col-lg-2 col-sm-3 col-xs-4">
+            <div ng-repeat="photo in stylePhotos" class="col-lg-2 col-sm-3 col-xs-4">
               <a href="{{photo.url}}" target="_blank">
                 <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
               </a>
@@ -32,8 +32,8 @@
           <h5 class="text-center"><i class="ion-flag text-primary"></i> Output Pictures</h5>
           <hr class="soften">
           <div class="row">
-            <div ng-repeat="photo in outPhotos  | filter:photo.mediaId" class="col-lg-2 col-sm-3 col-xs-4">
-              <a href="{{photo.url}}" target="_blank" type="image/png">
+            <div ng-repeat="photo in outPhotos  | keyDotless:photo.mediaId" class="col-lg-2 col-sm-3 col-xs-4">
+              <a href="{{photo.url}}" target="_blank" type="image/jpeg">
                 <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
               </a>
             </div>

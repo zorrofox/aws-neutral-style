@@ -22,6 +22,17 @@ angular.module('Instagram', ['ngRoute', 'angularFileUpload', 'ngMessages', 'sate
     $authProvider.loginUrl = 'https://au2jjdhqfl.execute-api.ap-northeast-1.amazonaws.com/dev/auth/login';
     $authProvider.signupUrl = 'https://au2jjdhqfl.execute-api.ap-northeast-1.amazonaws.com/dev/auth/signup';
 
+
+  })
+  .filter('keyDotless', function() {
+    return function(input, key) {
+      if (input && key) {
+        for (var i=0; i<input.length; i++)
+          if(input[i].Key.indexOf(key.replace(/\./g, '')) < 0)
+            input.splice(i, 1);
+        return input;
+      }
+    }
   })
   .run(function($rootScope, $window, $auth) {
     if ($auth.isAuthenticated()) {
