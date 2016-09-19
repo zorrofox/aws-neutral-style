@@ -1,0 +1,168 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: neutral-style
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: ap-northeast-1
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::neutral-style*/*"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource: "arn:aws:s3:::neutral-style*"
+    - Effect: "Allow"
+      Action:
+        - "ec2:StartInstances"
+        - "ec2:StopInstances"
+      Resource: "arn:aws:ec2:ap-northeast-1:287414531467:instance/*"
+    - Effect: "Allow"
+      Action:
+        - "ec2:Describe*"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ssm:*"
+      Resource: "arn:aws:ec2:ap-northeast-1:287414531467:instance/*"
+    - Effect: "Allow"
+      Action:
+        - "events:EnableRule"
+        - "events:DisableRule"
+      Resource: "arn:aws:events:ap-northeast-1:287414531467:rule/neutral-style-dev-StopGPUEventsRuleSchedule1-1WERG1W6W0Y94"
+    - Effect: "Allow"
+      Action:
+        - "ssm:SendCommand"
+      Resource: "arn:aws:ssm:ap-northeast-1::document/AWS-RunShellScript"
+    - Effect: "Allow"
+      Action:
+        - "ssm:DescribeInstanceInformation"
+        - "ssm:ListCommandInvocations"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource: "arn:aws:dynamodb:ap-northeast-1:287414531467:table/neutral-style-*"
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeAsync"
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda:ap-northeast-1:287414531467:function:neutral-style*"
+
+package:
+  individually: true
+
+functions:
+  runGPU:
+    handler: start.run
+    timeout: 300
+    events:
+      - s3: 
+          bucket: "neutral-style-photos"
+          event: s3:ObjectCreated:*
+  stopGPU:
+    handler: stop.run
+    timeout: 300
+    events:
+      - schedule: rate(30 minutes)
+
+  webAPISignup:
+    handler: web.signup
+    timeout: 10
+    events:
+      - http:
+          path: auth/signup
+          method: POST
+          cors: true
+  webAPILogin:
+    handler: web.login
+    timeout: 10
+    events:
+      - http:
+          path: auth/login
+          method: POST
+          cors: true
+  webAPIFeed:
+    handler: web.feed
+    timeout: 10
+    events:
+      - http:
+          path: api/feed
+          method: GET
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIMedia:
+    handler: web.media
+    timeout: 10
+    events:
+      - http:
+          path: api/media
+          method: GET
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIUpload:
+    handler: web.uploadUrl
+    timeout: 10
+    events:
+      - http:
+          path: api/upload
+          method: POST
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIDel:
+    handler: web.delUpload
+    timeout: 10
+    events:
+      - http:
+          path: api/upload
+          method: DELETE
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIRunGPU:
+    handler: web.runGPU
+    timeout: 100
+    events:
+      - http:
+          path: api/rungpu
+          method: POST
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIListGPUTask:
+    handler: web.listGPUTask
+    timeout: 10
+    events:
+      - http:
+          path: api/rungpu
+          method: GET
+          cors: true
+          authorizer:
+            name: webAPIIsAuthed
+            resultTtlInSeconds: 0
+  webAPIIsAuthed:
+    handler: web.isAuthenticated

@@ -1,0 +1,15 @@
+{
+  "name": "neutral-style",
+  "description": "Serverless using external libraries example with node",
+  "private": true,
+  "scripts": {
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {
+    "aws-sdk": "~2.6.1",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.8.3",
+    "bcryptjs": "^2.0.2",
+    "sync":"~0.2.5"
+  }
+}

@@ -1,0 +1,130 @@
+<div class="container">
+  <div ng-if="isAuthenticated() && currentUser.email">
+    <h5>We have some orignal pictures:</h5>
+    <div class="row">
+      <div ng-repeat="photo in photos" class="col-lg-2 col-sm-3 col-xs-4">
+        <a href="#/photo/{{photo.Key}}">
+          <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
+        </a>
+        <button type="button" class="btn btn-danger" ng-click="delOrig(photo.Key)">Remove</button>
+      </div>
+      <div class="col-lg-2 col-sm-3 col-xs-4" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter" options="{url: '/1#'}">
+        <div ng-show="uploader.isHTML5">
+          <div class="well my-drop-zone" nv-file-over over-class="another-file-over-class" uploader="uploader">
+            Drop Your Pictures
+          </div>
+        </div>
+        <input type="file" nv-file-select="" uploader="uploader" />
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th ng-show="uploader.isHTML5">Size</th>
+              <th ng-show="uploader.isHTML5">Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in uploader.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="uploader.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+              </td>
+              <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="ion-checkmark-round"></i></span>
+                <span ng-show="item.isCancel"><i class="ion-alert"></i></span>
+                <span ng-show="item.isError"><i class="ion-close-round"></i></span>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || fileUrlReady">
+                <span class="ion-arrow-up-a"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <span class="ion-close-circled"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <span class="ion-trash-a"></span> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <h5>We also have some style pictures:</h5>
+    <div class="row">
+      <div ng-repeat="photo in origPhotos" class="col-lg-2 col-sm-3 col-xs-4">
+        <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
+        <button type="button" class="btn btn-danger" ng-click="delStyle(photo.Key)">Remove</button>
+      </div>
+     <div class="col-lg-2 col-sm-3 col-xs-4" nv-file-drop="" uploader="uploaderStyle" filters="queueLimit, customFilter" options="{url: '/1#'}">
+        <div ng-show="uploaderStyle.isHTML5">
+          <div class="well my-drop-zone" nv-file-over over-class="another-file-over-class" uploader="uploaderStyle">
+            Drop Your Pictures
+          </div>
+        </div>
+        <input type="file" nv-file-select="" uploader="uploaderStyle" />
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th ng-show="uploaderStyle.isHTML5">Size</th>
+              <th ng-show="uploaderStyle.isHTML5">Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in uploaderStyle.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td ng-show="uploaderStyle.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="uploaderStyle.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+              </td>
+              <td class="text-center">
+                <span ng-show="item.isSuccess"><i class="ion-checkmark-round"></i></span>
+                <span ng-show="item.isCancel"><i class="ion-alert"></i></span>
+                <span ng-show="item.isError"><i class="ion-close-round"></i></span>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || fileUrlStyleReady">
+                <span class="ion-arrow-up-a"></span> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <span class="ion-close-circled"></span> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <span class="ion-trash-a"></span> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  
+    </div>
+    <h5>And we have the output pictures:</h5>
+    <div class="row">
+      <div ng-repeat="photo in outPhotos" class="col-lg-2 col-sm-3 col-xs-4">
+        <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="!isAuthenticated()">
+  <div class="jumbotron">
+    <h2><i class="ion-images"></i> Instagram</h2>
+    <p>This is a basic Instagram clone powered by <strong>Satellizer</strong>. To continue, please log in with your Instagram account or create a new email account.</p>
+    <p>
+      <a class="btn btn-lg btn-success" href="#/login"><i class="ion-log-in"></i> Log in</a>
+      <a class="btn btn-lg btn-primary" href="#/signup"><i class="ion-person-add"></i> Create account</a>
+    </p>
+  </div>
+</div>
+</div>

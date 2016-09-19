@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <img ng-src="{{photo.url}}" class="img-responsive">
+        </div>
+        <div class="col-xs-6">
+          <div class="caption">
+            <h5><i class="ion-arrow-expand text-primary"></i> Original Photo - {{photo.mediaId}}</h5>
+            <h6 class="text-muted"><i class="ion-clock"></i> Last updated: {{photo.LastModified | date:'short'}}</h6>
+            <h6 class="text-muted"><i class="ion-contrast"></i> Content Length: {{photo.ContentLength}} </h6>
+            <h6 class="text-muted"><i class="ion-pricetags"></i> E-Tage: {{photo.ETag}} </h6>
+          </div>
+          <br>
+          <button type="button" class="btn btn-block btn-primary" ng-disabled="enableRun" ng-click="runGPUCmd()">Run Again</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <hr class="soften">
+          <h5 class="text-center"><i class="ion-chatbox-working text-primary"></i> Style Pictures</h5>
+          <hr class="soften">
+          <div class="row">
+            <div ng-repeat="photo in origPhotos" class="col-lg-2 col-sm-3 col-xs-4">
+              <a href="{{photo.url}}" target="_blank">
+                <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
+              </a>
+            </div>
+          </div>
+          <hr class="soften">
+          <h5 class="text-center"><i class="ion-flag text-primary"></i> Output Pictures</h5>
+          <hr class="soften">
+          <div class="row">
+            <div ng-repeat="photo in outPhotos  | filter:photo.mediaId" class="col-lg-2 col-sm-3 col-xs-4">
+              <a href="{{photo.url}}" target="_blank" type="image/png">
+                <img ng-src="{{photo.url}}" class="thumbnail img-responsive">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
